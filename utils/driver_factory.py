@@ -1,19 +1,13 @@
-from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-class HomePage:
+def get_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
 
-    def __init__(self, driver):
-        self.driver = driver
-
-    # Locators
-    search_field = (By.NAME, "q")
-    search_button = (By.XPATH, "//button[@type='submit']")
-
-    # Actions
-    def open_website(self):
-        self.driver.get("https://www.daraz.pk")
-
-    def search_product(self, product_name):
-        self.driver.find_element(*self.search_field).click()
-        self.driver.find_element(*self.search_field).send_keys(product_name)
-        self.driver.find_element(*self.search_button).click()
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options
+    )
+    return driver
